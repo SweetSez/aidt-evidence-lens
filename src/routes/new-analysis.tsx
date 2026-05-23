@@ -3,6 +3,7 @@ import { AppLayout } from "@/components/AppLayout";
 import { COUNTRIES, PILLARS } from "@/lib/mock-data";
 import { useState } from "react";
 import { Play, Loader2, Search, FileSearch, Brain } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/new-analysis")({
   head: () => ({ meta: [{ title: "New Analysis — RDTII" }] }),
@@ -10,6 +11,7 @@ export const Route = createFileRoute("/new-analysis")({
 });
 
 function NewAnalysis() {
+  const { t } = useI18n();
   const [country, setCountry] = useState("Kazakhstan");
   const [pillar, setPillar] = useState(PILLARS[0].id);
   const [running, setRunning] = useState(false);
@@ -23,14 +25,12 @@ function NewAnalysis() {
   return (
     <AppLayout>
       <div className="max-w-3xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">New Analysis</h1>
-        <p className="text-sm text-muted-foreground mt-1 mb-8">
-          Configure an AI evidence extraction run. The system will retrieve, parse, and map relevant legal provisions for human review.
-        </p>
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">{t("new.title")}</h1>
+        <p className="text-sm text-muted-foreground mt-1 mb-8">{t("new.sub")}</p>
 
         <div className="bg-card border border-border rounded-lg shadow-card p-6 space-y-6">
           <div>
-            <label className="text-sm font-medium text-foreground block mb-2">Country</label>
+            <label className="text-sm font-medium text-foreground block mb-2">{t("new.country")}</label>
             <select
               value={country}
               onChange={(e) => setCountry(e.target.value)}
@@ -38,11 +38,11 @@ function NewAnalysis() {
             >
               {COUNTRIES.map((c) => <option key={c}>{c}</option>)}
             </select>
-            <p className="text-xs text-muted-foreground mt-1.5">Jurisdiction whose legal corpus will be searched.</p>
+            <p className="text-xs text-muted-foreground mt-1.5">{t("new.countryHint")}</p>
           </div>
 
           <div>
-            <label className="text-sm font-medium text-foreground block mb-2">Pillar</label>
+            <label className="text-sm font-medium text-foreground block mb-2">{t("new.pillar")}</label>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {PILLARS.map((p) => (
                 <label
@@ -60,12 +60,12 @@ function NewAnalysis() {
           </div>
 
           <div className="border-t border-border pt-5">
-            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">Pipeline preview</div>
+            <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-3">{t("new.preview")}</div>
             <ol className="space-y-2 text-sm">
               {[
-                { i: Search, t: "Search & shortlist legal documents", note: "AI · ~2 min" },
-                { i: FileSearch, t: "Extract & map provisions to indicators", note: "AI · ~5 min" },
-                { i: Brain, t: "Queue for human review", note: "Researcher" },
+                { i: Search, t: t("new.s1"), note: "AI · ~2 min" },
+                { i: FileSearch, t: t("new.s2"), note: "AI · ~5 min" },
+                { i: Brain, t: t("new.s3"), note: "Researcher" },
               ].map((s, i) => (
                 <li key={i} className="flex items-center gap-3 text-foreground">
                   <span className="h-7 w-7 rounded-md bg-secondary text-muted-foreground grid place-items-center">
@@ -83,7 +83,7 @@ function NewAnalysis() {
             disabled={running}
             className="w-full inline-flex items-center justify-center gap-2 h-11 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 transition-colors disabled:opacity-70"
           >
-            {running ? <><Loader2 className="h-4 w-4 animate-spin" /> Running pipeline…</> : <><Play className="h-4 w-4" /> Run Analysis</>}
+            {running ? <><Loader2 className="h-4 w-4 animate-spin" /> {t("new.running")}</> : <><Play className="h-4 w-4" /> {t("new.run")}</>}
           </button>
         </div>
       </div>

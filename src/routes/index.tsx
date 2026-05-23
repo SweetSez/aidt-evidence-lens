@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppLayout } from "@/components/AppLayout";
 import { provisions, recentActivity, COUNTRIES } from "@/lib/mock-data";
 import { ArrowRight, FileText, CheckCircle2, Clock, Globe2 } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -34,6 +35,7 @@ function Stat({ label, value, sub, icon: Icon, tone }: { label: string; value: s
 }
 
 function Dashboard() {
+  const { t } = useI18n();
   const total = provisions.length;
   const approved = provisions.filter((p) => p.status === "approved").length;
   const pending = provisions.filter((p) => p.status === "pending").length;
@@ -43,31 +45,29 @@ function Dashboard() {
     <AppLayout>
       <div className="flex flex-wrap items-end justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            AI-assisted legal evidence pipeline for digital trade policy analysis.
-          </p>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">{t("dash.title")}</h1>
+          <p className="text-sm text-muted-foreground mt-1">{t("dash.sub")}</p>
         </div>
         <Link
           to="/new-analysis"
           className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors"
         >
-          New Analysis <ArrowRight className="h-4 w-4" />
+          {t("dash.new")} <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Stat label="Provisions found" value={String(total)} sub={`Across ${countriesActive} countries`} icon={FileText} tone="primary" />
-        <Stat label="Approved" value={String(approved)} sub="Validated by reviewers" icon={CheckCircle2} tone="success" />
-        <Stat label="Pending review" value={String(pending)} sub="Awaiting human verification" icon={Clock} tone="warning" />
-        <Stat label="Countries active" value={`${countriesActive} / ${COUNTRIES.length}`} sub="In current analysis cycle" icon={Globe2} tone="primary" />
+        <Stat label={t("dash.found")} value={String(total)} sub={t("dash.foundSub", { n: countriesActive })} icon={FileText} tone="primary" />
+        <Stat label={t("dash.approved")} value={String(approved)} sub={t("dash.approvedSub")} icon={CheckCircle2} tone="success" />
+        <Stat label={t("dash.pending")} value={String(pending)} sub={t("dash.pendingSub")} icon={Clock} tone="warning" />
+        <Stat label={t("dash.countries")} value={`${countriesActive} / ${COUNTRIES.length}`} sub={t("dash.countriesSub")} icon={Globe2} tone="primary" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <section className="lg:col-span-2 bg-card border border-border rounded-lg shadow-card">
           <header className="px-5 py-4 border-b border-border flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-foreground">Active analyses</h2>
-            <Link to="/review" className="text-xs text-primary font-medium hover:underline">Open review →</Link>
+            <h2 className="text-sm font-semibold text-foreground">{t("dash.active")}</h2>
+            <Link to="/review" className="text-xs text-primary font-medium hover:underline">{t("dash.openReview")}</Link>
           </header>
           <div className="divide-y divide-border">
             {[...new Set(provisions.map((p) => p.country))].map((country) => {
@@ -78,17 +78,17 @@ function Dashboard() {
               const pct = Math.round(((a + r) / items.length) * 100);
               return (
                 <div key={country} className="px-5 py-4">
-                  <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center justify-between mb-2 gap-3 flex-wrap">
                     <div>
                       <div className="text-sm font-medium text-foreground">{country}</div>
                       <div className="text-xs text-muted-foreground">
-                        {items.length} provisions · {[...new Set(items.map((i) => i.pillar))].join(", ")}
+                        {items.length} {t("dash.provisions")} · {[...new Set(items.map((i) => i.pillar))].join(", ")}
                       </div>
                     </div>
                     <div className="text-xs text-muted-foreground tabular-nums">
-                      <span className="text-success font-medium">{a} approved</span> ·{" "}
-                      <span className="text-destructive font-medium">{r} rejected</span> ·{" "}
-                      <span className="text-warning font-medium">{p} pending</span>
+                      <span className="text-success font-medium">{a} {t("dash.aApproved")}</span> ·{" "}
+                      <span className="text-destructive font-medium">{r} {t("dash.aRejected")}</span> ·{" "}
+                      <span className="text-warning font-medium">{p} {t("dash.aPending")}</span>
                     </div>
                   </div>
                   <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
@@ -102,7 +102,7 @@ function Dashboard() {
 
         <section className="bg-card border border-border rounded-lg shadow-card">
           <header className="px-5 py-4 border-b border-border">
-            <h2 className="text-sm font-semibold text-foreground">Recent activity</h2>
+            <h2 className="text-sm font-semibold text-foreground">{t("dash.recent")}</h2>
           </header>
           <ul className="divide-y divide-border">
             {recentActivity.map((a, i) => (
