@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReviewRouteImport } from './routes/review'
 import { Route as ResultsRouteImport } from './routes/results'
 import { Route as NewAnalysisRouteImport } from './routes/new-analysis'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ReviewRoute = ReviewRouteImport.update({
@@ -29,6 +30,11 @@ const NewAnalysisRoute = NewAnalysisRouteImport.update({
   path: '/new-analysis',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/new-analysis': typeof NewAnalysisRoute
   '/results': typeof ResultsRoute
   '/review': typeof ReviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/new-analysis': typeof NewAnalysisRoute
   '/results': typeof ResultsRoute
   '/review': typeof ReviewRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/new-analysis': typeof NewAnalysisRoute
   '/results': typeof ResultsRoute
   '/review': typeof ReviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/new-analysis' | '/results' | '/review'
+  fullPaths: '/' | '/about' | '/new-analysis' | '/results' | '/review'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/new-analysis' | '/results' | '/review'
-  id: '__root__' | '/' | '/new-analysis' | '/results' | '/review'
+  to: '/' | '/about' | '/new-analysis' | '/results' | '/review'
+  id: '__root__' | '/' | '/about' | '/new-analysis' | '/results' | '/review'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   NewAnalysisRoute: typeof NewAnalysisRoute
   ResultsRoute: typeof ResultsRoute
   ReviewRoute: typeof ReviewRoute
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewAnalysisRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   NewAnalysisRoute: NewAnalysisRoute,
   ResultsRoute: ResultsRoute,
   ReviewRoute: ReviewRoute,
