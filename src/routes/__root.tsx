@@ -75,11 +75,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "RDTII AI Evidence Tool" },
-      { name: "description", content: "AI-assisted legal evidence extraction for digital trade policy analysis. Built for UN ESCAP researchers." },
+      { name: "description", content: "Automates legal evidence extraction for digital trade policy analysis." },
       { property: "og:title", content: "RDTII AI Evidence Tool" },
-      { property: "og:description", content: "AI-assisted legal evidence extraction for digital trade policy analysis." },
+      { property: "og:description", content: "Automates legal evidence extraction for digital trade policy analysis." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "RDTII AI Evidence Tool" },
+      { name: "twitter:description", content: "Automates legal evidence extraction for digital trade policy analysis." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/49559f56-6574-45a0-a77f-114489905b2a/id-preview-905a9424--66b23246-6213-4e99-ab88-536168aa1300.lovable.app-1779559175827.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/49559f56-6574-45a0-a77f-114489905b2a/id-preview-905a9424--66b23246-6213-4e99-ab88-536168aa1300.lovable.app-1779559175827.png" },
     ],
     links: [
       {
