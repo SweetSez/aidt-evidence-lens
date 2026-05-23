@@ -72,14 +72,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "RDTII AI Evidence Tool" },
+      { name: "description", content: "AI-assisted legal evidence extraction for digital trade policy analysis. Built for UN ESCAP researchers." },
+      { property: "og:title", content: "RDTII AI Evidence Tool" },
+      { property: "og:description", content: "AI-assisted legal evidence extraction for digital trade policy analysis." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
