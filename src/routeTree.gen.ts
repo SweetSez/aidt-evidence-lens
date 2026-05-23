@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ReviewRouteImport } from './routes/review'
 import { Route as ResultsRouteImport } from './routes/results'
 import { Route as NewAnalysisRouteImport } from './routes/new-analysis'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ReviewRoute = ReviewRouteImport.update({
   id: '/review',
   path: '/review',
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/new-analysis': typeof NewAnalysisRoute
   '/results': typeof ResultsRoute
   '/review': typeof ReviewRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/new-analysis': typeof NewAnalysisRoute
   '/results': typeof ResultsRoute
   '/review': typeof ReviewRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,27 @@ export interface FileRoutesById {
   '/new-analysis': typeof NewAnalysisRoute
   '/results': typeof ResultsRoute
   '/review': typeof ReviewRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/new-analysis' | '/results' | '/review'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/new-analysis'
+    | '/results'
+    | '/review'
+    | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/new-analysis' | '/results' | '/review'
-  id: '__root__' | '/' | '/about' | '/new-analysis' | '/results' | '/review'
+  to: '/' | '/about' | '/new-analysis' | '/results' | '/review' | '/sitemap.xml'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/new-analysis'
+    | '/results'
+    | '/review'
+    | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,10 +99,18 @@ export interface RootRouteChildren {
   NewAnalysisRoute: typeof NewAnalysisRoute
   ResultsRoute: typeof ResultsRoute
   ReviewRoute: typeof ReviewRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/review': {
       id: '/review'
       path: '/review'
@@ -125,7 +155,18 @@ const rootRouteChildren: RootRouteChildren = {
   NewAnalysisRoute: NewAnalysisRoute,
   ResultsRoute: ResultsRoute,
   ReviewRoute: ReviewRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
